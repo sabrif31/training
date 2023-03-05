@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import { FixedSizeList as List } from "react-window";
 import AutoSizer, { Size } from "react-virtualized-auto-sizer";
-import Fuse from "fuse.js";
 
-import Item from "../atoms/Item";
-import CustomTextField from "../atoms/TextField";
-
+import { useFuse } from "../../hooks/useFuse";
 import data from "../../datas/datas.json";
+import CustomTextField from "../atoms/TextField";
+import Item from "../atoms/Item";
 
 type Items = {
   activity: string;
@@ -31,14 +30,12 @@ type FuseResult = {
   matches: Matches[];
   refIndex: number;
 };
-
-type SearchProps = {
-  keys: string[];
-};
-
 type Row = {
   index: number;
   style: React.CSSProperties;
+};
+type SearchProps = {
+  keys: string[];
 };
 
 const highlight = (
@@ -77,7 +74,6 @@ const highlight = (
 
     return content;
   };
-
   return fuseSearchResult
     .filter(({ matches }: FuseResult) => matches && matches.length)
     .map(({ item, matches }: FuseResult) => {
@@ -95,90 +91,78 @@ const highlight = (
     });
 };
 
-let fuse: Fuse<T>;
-const Search = (props: SearchProps) => {
+const MySearch = (props: SearchProps) => {
   const [value, setValue] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [searchData, setSearchData] = useState<Items[]>(data);
-  const [searchDataHighlight, setSearchDataHighlight] = useState<Items[]>(data);
-
-  useEffect(() => {
-    fuse = new Fuse(data, {
-      includeMatches: true,
-      shouldSort: true,
-      threshold: 0.1,
-      location: 0,
-      distance: 100,
-      useExtendedSearch: true,
-      keys: props.keys,
-    });
-  }, []);
-
-  const searchItem = (query: string) => {
-    setIsOpen(query.length === 0 || query.length < 2 ? false : true);
-    const result: any[] = fuse.search(`${query}`); // "'" +
-    const finalResult: Items[] = [];
-    if (result.length) {
-      result.forEach(({ item }) => {
-        finalResult.push(item);
-      });
-      setSearchData(finalResult);
-      setSearchDataHighlight(highlight(result));
-    } else {
-      setSearchData(data);
-      setSearchData(data);
-    }
-    setValue(query);
-  };
+  const { hits, query, onSearch } = useFuse(data, {
+    matchAllOnEmptyQuery: true,
+    includeMatches: true,
+    shouldSort: true,
+    threshold: 0.1,
+    location: 0,
+    distance: 100,
+    useExtendedSearch: true,
+    keys: props.keys,
+  });
 
   const Row = ({ index, style }: Row) => (
     <ListItem
       onClick={() => {
-        setValue(searchData[index]?.activity);
+        console.log(hits[index]);
+        setValue(hits[index].item.activity);
         setIsOpen(false);
       }}
       style={style}
     >
-      <Item {...searchDataHighlight[index]} key={index} />
+      <Item {...highlight(hits)[index]} key={index} />
     </ListItem>
   );
 
+  useEffect(() => {
+    setIsOpen(query.length > 1);
+  }, [query]);
+
   return (
-    <ClickAwayListener onClickAway={() => setIsOpen(false)}>
-      <SearchContainer>
-        <CustomTextField
-          name={"time"}
-          type={"search"}
-          className="time"
-          label={"Search activity"}
-          value={value}
-          changeHandler={(e) => searchItem(e.target.value)}
-        />
-        {isOpen && (
-          <ItemContainer>
-            <DivAutoSizer>
-              <AutoSizer>
-                {({ height, width }: Size) => (
-                  <List
-                    className="List"
-                    height={height}
-                    itemCount={searchDataHighlight.length}
-                    itemSize={85}
-                    width={width}
-                  >
-                    {Row}
-                  </List>
-                )}
-              </AutoSizer>
-            </DivAutoSizer>
-          </ItemContainer>
-        )}
-      </SearchContainer>
-    </ClickAwayListener>
+    <SearchContainer>
+      <ClickAwayListener onClickAway={() => setIsOpen(false)}>
+        <>
+          <CustomTextField
+            name={"search"}
+            type={"search"}
+            className="search"
+            label={"Search activity"}
+            changeHandler={(e) => {
+              onSearch(e);
+              setValue(e.target.value);
+            }}
+            value={value}
+          />
+          {isOpen && (
+            <ItemContainer>
+              <DivAutoSizer>
+                <AutoSizer>
+                  {({ height, width }: Size) => (
+                    <List
+                      className="List"
+                      height={height}
+                      itemCount={hits.length}
+                      itemSize={85}
+                      width={width}
+                    >
+                      {Row}
+                    </List>
+                  )}
+                </AutoSizer>
+              </DivAutoSizer>
+            </ItemContainer>
+          )}
+        </>
+      </ClickAwayListener>
+    </SearchContainer>
   );
 };
 
-export default Search;
+export default MySearch;
 
 const SearchContainer = styled.div`
   position: relative;

@@ -1,6 +1,6 @@
-import React, { FC, ReactElement, RefObject } from 'react'
-import { TextField } from '@mui/material'
-import styled from '@emotion/styled'
+import React, { FC, ReactElement, RefObject } from "react";
+import { TextField } from "@mui/material";
+import styled from "@emotion/styled";
 
 const Input = styled(TextField)`
   margin: 0 0 8px 0;
@@ -11,24 +11,24 @@ const Input = styled(TextField)`
   fieldset {
     border: none;
   }
-`
+`;
 
 type CustomTextFieldProps = {
-  ref?: RefObject<HTMLInputElement>
-  name: string
-  changeHandler?: (event: React.ChangeEvent<HTMLInputElement>) => void
-  value?: string
-  disabled?: boolean
-  required?: boolean
-  helperText?: string
-  label?: string
-  type?: string
-  className?: string
-  style?: object
-  InputProps?: object
-  defaultValue?: string
-  sx?: object
-}
+  ref?: RefObject<HTMLInputElement>;
+  name: string;
+  changeHandler?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  disabled?: boolean;
+  required?: boolean;
+  helperText?: string;
+  label?: string;
+  type?: string;
+  className?: string;
+  style?: object;
+  InputProps?: object;
+  defaultValue?: string;
+  sx?: object;
+};
 
 const CustomTextField: FC<CustomTextFieldProps> = (
   props: CustomTextFieldProps
@@ -48,11 +48,12 @@ const CustomTextField: FC<CustomTextFieldProps> = (
       defaultValue={props.defaultValue}
       value={props.value}
       required={props.required}
-      variant={'outlined'}
-      size={'small'}
-      margin={'dense'}
+      variant={"outlined"}
+      size={"small"}
+      margin={"dense"}
+      autoComplete={"off"}
     />
-  )
-}
+  );
+};
 
-export default CustomTextField
+export default CustomTextField;
