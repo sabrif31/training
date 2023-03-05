@@ -16,22 +16,6 @@ type Items = {
   category: string;
 };
 
-interface IFormatted {
-  [key: number]: number;
-}
-
-interface Matches {
-  indices: Array<IFormatted>;
-  key: string;
-  value: string;
-}
-
-type FuseResult = {
-  item: Items;
-  matches: Matches[];
-  refIndex: number;
-};
-
 type SearchProps = {
   keys: string[];
 };
@@ -42,7 +26,7 @@ type Row = {
 };
 
 const highlight = (
-  fuseSearchResult: FuseResult[],
+  fuseSearchResult: Fuse.FuseResult<Items>[],
   highlightClassName: string = "highlight"
 ) => {
   const set = (obj: any, path: string, value: string) => {
@@ -79,11 +63,11 @@ const highlight = (
   };
 
   return fuseSearchResult
-    .filter(({ matches }: FuseResult) => matches && matches.length)
-    .map(({ item, matches }: FuseResult) => {
+    .filter(({ matches }: Fuse.FuseResult<Items>) => matches && matches.length)
+    .map(({ item, matches }: Fuse.FuseResult<Items>) => {
       const highlightedItem = { ...item };
 
-      matches.forEach((match: any) => {
+      matches?.forEach((match: any) => {
         set(
           highlightedItem,
           match.key,
@@ -95,7 +79,7 @@ const highlight = (
     });
 };
 
-let fuse: Fuse<T>;
+let fuse: Fuse<any>;
 const Search = (props: SearchProps) => {
   const [value, setValue] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -116,7 +100,7 @@ const Search = (props: SearchProps) => {
 
   const searchItem = (query: string) => {
     setIsOpen(query.length === 0 || query.length < 2 ? false : true);
-    const result: any[] = fuse.search(`${query}`); // "'" +
+    const result: Fuse.FuseResult<Items>[] = fuse.search(`${query}`); // "'" +
     const finalResult: Items[] = [];
     if (result.length) {
       result.forEach(({ item }) => {

@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import { FixedSizeList as List } from "react-window";
 import AutoSizer, { Size } from "react-virtualized-auto-sizer";
+import Fuse from "fuse.js";
 
 import { useFuse } from "../../hooks/useFuse";
 import data from "../../datas/datas.json";
@@ -15,21 +16,6 @@ type Items = {
   category: string;
 };
 
-interface IFormatted {
-  [key: number]: number;
-}
-
-interface Matches {
-  indices: Array<IFormatted>;
-  key: string;
-  value: string;
-}
-
-type FuseResult = {
-  item: Items;
-  matches: Matches[];
-  refIndex: number;
-};
 type Row = {
   index: number;
   style: React.CSSProperties;
@@ -39,7 +25,7 @@ type SearchProps = {
 };
 
 const highlight = (
-  fuseSearchResult: FuseResult[],
+  fuseSearchResult: Fuse.FuseResult<Items>[],
   highlightClassName: string = "highlight"
 ) => {
   const set = (obj: any, path: string, value: string) => {
@@ -75,11 +61,11 @@ const highlight = (
     return content;
   };
   return fuseSearchResult
-    .filter(({ matches }: FuseResult) => matches && matches.length)
-    .map(({ item, matches }: FuseResult) => {
+    .filter(({ matches }: Fuse.FuseResult<Items>) => matches && matches.length)
+    .map(({ item, matches }: Fuse.FuseResult<Items>) => {
       const highlightedItem = { ...item };
 
-      matches.forEach((match: any) => {
+      matches?.forEach((match: any) => {
         set(
           highlightedItem,
           match.key,
@@ -95,7 +81,6 @@ const MySearch = (props: SearchProps) => {
   const [value, setValue] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { hits, query, onSearch } = useFuse(data, {
-    matchAllOnEmptyQuery: true,
     includeMatches: true,
     shouldSort: true,
     threshold: 0.1,
@@ -123,22 +108,22 @@ const MySearch = (props: SearchProps) => {
   }, [query]);
 
   return (
-    <SearchContainer>
-      <ClickAwayListener onClickAway={() => setIsOpen(false)}>
-        <>
-          <CustomTextField
-            name={"search"}
-            type={"search"}
-            className="search"
-            label={"Search activity"}
-            changeHandler={(e) => {
-              onSearch(e);
-              setValue(e.target.value);
-            }}
-            value={value}
-          />
-          {isOpen && (
-            <ItemContainer>
+    <ClickAwayListener onClickAway={() => setIsOpen(false)}>
+      <SearchContainer>
+        <CustomTextField
+          name={"search"}
+          type={"search"}
+          className="search"
+          label={"Search activity"}
+          changeHandler={(e) => {
+            onSearch(e);
+            setValue(e.target.value);
+          }}
+          value={value}
+        />
+        {isOpen && (
+          <ItemContainer>
+            {hits.length > 0 ? (
               <DivAutoSizer>
                 <AutoSizer>
                   {({ height, width }: Size) => (
@@ -154,11 +139,13 @@ const MySearch = (props: SearchProps) => {
                   )}
                 </AutoSizer>
               </DivAutoSizer>
-            </ItemContainer>
-          )}
-        </>
-      </ClickAwayListener>
-    </SearchContainer>
+            ) : (
+              <p style={{ textAlign: "center", width: "100%" }}>No results</p>
+            )}
+          </ItemContainer>
+        )}
+      </SearchContainer>
+    </ClickAwayListener>
   );
 };
 
@@ -174,7 +161,7 @@ const ItemContainer = styled.div`
   border-left: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
   width: 100%;
-  height: 350px;
+  min-height: 50px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;

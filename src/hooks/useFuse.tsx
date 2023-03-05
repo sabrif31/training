@@ -8,32 +8,19 @@ interface List {
   category: string;
 }
 
-interface FuseOptions {
-  includeMatches?: boolean;
-  shouldSort?: boolean;
-  threshold?: number;
-  location?: number;
-  distance?: number;
-  useExtendedSearch?: boolean;
-  matchAllOnEmptyQuery?: boolean;
-  keys?: string[];
-  limit?: number;
-}
-
-export const useFuse = (list: List[], options: FuseOptions) => {
+export const useFuse = (list: List[], options: Fuse.IFuseOptions<T>) => {
   const [query, updateQuery] = useState("");
-  const { limit, matchAllOnEmptyQuery, ...fuseOptions } = options;
+  const { ...fuseOptions } = options;
   const fuse = useMemo(() => new Fuse(list, fuseOptions), [list, fuseOptions]);
 
   const hits = useMemo(
     () =>
-      !query && matchAllOnEmptyQuery
+      !query
         ? fuse
             .getIndex()
-            .docs.slice(0, limit)
-            .map((item: List, refIndex: number) => ({ item, refIndex }))
+            .docs.map((item: List, refIndex: number) => ({ item, refIndex }))
         : fuse.search(query),
-    [fuse, limit, matchAllOnEmptyQuery, query]
+    [fuse, query]
   );
 
   const setQuery = useCallback(debounce(100, updateQuery), []);
