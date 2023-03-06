@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { FixedSizeList as List } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
-import Fuse from 'fuse.js'
 
 import { useFuse } from '../../hooks/useFuse'
 import data from '../../datas/datas.json'
