@@ -78,7 +78,7 @@ export const useFuse = (list: List[], options: Fuse.IFuseOptions<T>) => {
         ? fuse
             .getIndex()
             .docs.map((item: List, refIndex: number) => ({ item, refIndex }))
-        : highlight(fuse.search(query)),
+        : highlight(fuse.search(query.replaceAll(" ", " '"))),
     [fuse, query]
   );
 

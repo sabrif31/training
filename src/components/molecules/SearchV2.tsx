@@ -53,7 +53,7 @@ const MySearch = (props: SearchProps) => {
       <SearchContainer>
         <CustomTextField
           name={"search"}
-          type={"text"}
+          type={"search"}
           className="search"
           label={"Search activity"}
           changeHandler={(e) => {
