@@ -17,6 +17,7 @@ type CustomTextFieldProps = {
   ref?: RefObject<HTMLInputElement>;
   name: string;
   changeHandler?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   value?: string;
   disabled?: boolean;
   required?: boolean;
@@ -41,6 +42,7 @@ const CustomTextField: FC<CustomTextFieldProps> = (
       disabled={props.disabled}
       name={props.name}
       onChange={props.changeHandler}
+      onFocus={props.onFocus}
       type={props.type}
       helperText={props.helperText}
       style={props.style}

@@ -61,6 +61,9 @@ const MySearch = (props: SearchProps) => {
             setValue(e.target.value);
           }}
           value={value}
+          onFocus={() => {
+            if (value.length > 1) setIsOpen(true);
+          }}
         />
         {isOpen && (
           <ItemContainer>
