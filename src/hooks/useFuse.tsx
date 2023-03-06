@@ -57,10 +57,7 @@ const highlight = (
     })
 }
 
-export const useFuse = (
-  list: Array<object>[],
-  options: Fuse.IFuseOptions<T>
-) => {
+export const useFuse = (list: Array<object>, options: Fuse.IFuseOptions<T>) => {
   const [query, updateQuery] = useState('')
   const { ...fuseOptions } = options
   const fuse = useMemo(() => new Fuse(list, fuseOptions), [list, fuseOptions])
