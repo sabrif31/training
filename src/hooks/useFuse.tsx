@@ -2,14 +2,8 @@ import Fuse from 'fuse.js'
 import { useCallback, useMemo, useState } from 'react'
 import { debounce } from 'throttle-debounce'
 
-type Items = {
-  activity: string
-  sector: string
-  category: string
-}
-
 const highlight = (
-  fuseSearchResult: Fuse.FuseResult<Items>[],
+  fuseSearchResult: Fuse.FuseResult<Array<object>>[],
   highlightClassName: string = 'highlight'
 ) => {
   const set = (obj: any, path: string, value: string) => {
@@ -45,8 +39,10 @@ const highlight = (
     return content
   }
   return fuseSearchResult
-    .filter(({ matches }: Fuse.FuseResult<Items>) => matches && matches.length)
-    .map(({ item, matches }: Fuse.FuseResult<Items>) => {
+    .filter(
+      ({ matches }: Fuse.FuseResult<Array<object>>) => matches && matches.length
+    )
+    .map(({ item, matches }: Fuse.FuseResult<Array<object>>) => {
       const highlightedItem = { ...item }
 
       matches?.forEach((match: any) => {
@@ -61,7 +57,10 @@ const highlight = (
     })
 }
 
-export const useFuse = (list: Items[], options: Fuse.IFuseOptions<T>) => {
+export const useFuse = (
+  list: Array<object>[],
+  options: Fuse.IFuseOptions<T>
+) => {
   const [query, updateQuery] = useState('')
   const { ...fuseOptions } = options
   const fuse = useMemo(() => new Fuse(list, fuseOptions), [list, fuseOptions])
@@ -69,9 +68,10 @@ export const useFuse = (list: Items[], options: Fuse.IFuseOptions<T>) => {
   const hits = useMemo(
     () =>
       !query
-        ? fuse
-            .getIndex()
-            .docs.map((item: Items, refIndex: number) => ({ item, refIndex }))
+        ? fuse.getIndex().docs.map((item: Array<object>, refIndex: number) => ({
+            item,
+            refIndex,
+          }))
         : highlight(fuse.search(query.replaceAll(' ', " '"))),
     [fuse, query]
   )
