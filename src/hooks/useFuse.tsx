@@ -2,12 +2,6 @@ import Fuse from 'fuse.js'
 import { useCallback, useMemo, useState } from 'react'
 import { debounce } from 'throttle-debounce'
 
-interface List {
-  activity: string
-  sector: string
-  category: string
-}
-
 type Items = {
   activity: string
   sector: string
@@ -67,7 +61,7 @@ const highlight = (
     })
 }
 
-export const useFuse = (list: List[], options: Fuse.IFuseOptions<T>) => {
+export const useFuse = (list: Items[], options: Fuse.IFuseOptions<T>) => {
   const [query, updateQuery] = useState('')
   const { ...fuseOptions } = options
   const fuse = useMemo(() => new Fuse(list, fuseOptions), [list, fuseOptions])
@@ -77,7 +71,7 @@ export const useFuse = (list: List[], options: Fuse.IFuseOptions<T>) => {
       !query
         ? fuse
             .getIndex()
-            .docs.map((item: List, refIndex: number) => ({ item, refIndex }))
+            .docs.map((item: Items, refIndex: number) => ({ item, refIndex }))
         : highlight(fuse.search(query.replaceAll(' ', " '"))),
     [fuse, query]
   )
