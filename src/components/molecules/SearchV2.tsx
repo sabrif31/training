@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
-import styled from "@emotion/styled";
-import ClickAwayListener from "@mui/base/ClickAwayListener";
-import { FixedSizeList as List } from "react-window";
-import AutoSizer, { Size } from "react-virtualized-auto-sizer";
-import Fuse from "fuse.js";
+import React, { useEffect, useState } from 'react'
+import styled from '@emotion/styled'
+import ClickAwayListener from '@mui/base/ClickAwayListener'
+import { FixedSizeList as List } from 'react-window'
+import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
+import Fuse from 'fuse.js'
 
-import { useFuse } from "../../hooks/useFuse";
-import data from "../../datas/datas.json";
-import CustomTextField from "../atoms/TextField";
-import Item from "../atoms/Item";
+import { useFuse } from '../../hooks/useFuse'
+import data from '../../datas/datas.json'
+import CustomTextField from '../atoms/TextField'
+import Item from '../atoms/Item'
 
 type Row = {
-  index: number;
-  style: React.CSSProperties;
-};
+  index: number
+  style: React.CSSProperties
+}
 
 type SearchProps = {
-  keys: string[];
-};
+  keys: string[]
+}
 
 const MySearch = (props: SearchProps) => {
-  const [value, setValue] = useState<string>("");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [value, setValue] = useState<string>('')
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const { hits, query, onSearch, removeMark } = useFuse(data, {
     includeMatches: true,
     shouldSort: true,
@@ -30,39 +30,40 @@ const MySearch = (props: SearchProps) => {
     distance: 100,
     useExtendedSearch: true,
     keys: props.keys,
-  });
+  })
 
   const Row = ({ index, style }: Row) => (
     <ListItem
+      tabIndex={index}
       onClick={() => {
-        setValue(removeMark(hits[index].activity));
-        setIsOpen(false);
+        setValue(removeMark(hits[index].activity))
+        setIsOpen(false)
       }}
       style={style}
     >
       <Item {...hits[index]} key={index} />
     </ListItem>
-  );
+  )
 
   useEffect(() => {
-    setIsOpen(query.length > 1);
-  }, [query]);
+    setIsOpen(query.length > 1)
+  }, [query])
 
   return (
     <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <SearchContainer>
         <CustomTextField
-          name={"search"}
-          type={"search"}
+          name={'search'}
+          type={'search'}
           className="search"
-          label={"Search activity"}
+          label={'Search activity'}
           changeHandler={(e) => {
-            onSearch(e);
-            setValue(e.target.value);
+            onSearch(e)
+            setValue(e.target.value)
           }}
           value={value}
           onFocus={() => {
-            if (value.length > 1) setIsOpen(true);
+            if (value.length > 1) setIsOpen(true)
           }}
         />
         {isOpen && (
@@ -84,20 +85,25 @@ const MySearch = (props: SearchProps) => {
                 </AutoSizer>
               </DivAutoSizer>
             ) : (
-              <p style={{ textAlign: "center", width: "100%" }}>No results</p>
+              <NoResults>No results</NoResults>
             )}
           </ItemContainer>
         )}
       </SearchContainer>
     </ClickAwayListener>
-  );
-};
+  )
+}
 
-export default MySearch;
+export default MySearch
+
+const NoResults = styled.p`
+  text-align: center;
+  width: 100%;
+`
 
 const SearchContainer = styled.div`
   position: relative;
-`;
+`
 const ItemContainer = styled.div`
   position: absolute;
   z-index: 10;
@@ -125,11 +131,11 @@ const ItemContainer = styled.div`
   .item .name p {
     margin-top: 2px;
   }
-`;
+`
 const DivAutoSizer = styled.div`
   flex: 1 1 auto;
   height: 350px;
-`;
+`
 const ListItem = styled.div`
   display: flex;
   align-items: center;
@@ -152,4 +158,4 @@ const ListItem = styled.div`
       /*color: #fff;*/
     }
   }
-`;
+`

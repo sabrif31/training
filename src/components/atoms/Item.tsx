@@ -1,10 +1,10 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled'
 
 type ItemProps = {
-  activity: string;
-  sector: string;
-  category: string;
-};
+  activity: string
+  sector: string
+  category: string
+}
 
 const Item = (props: ItemProps) => {
   return (
@@ -19,20 +19,20 @@ const Item = (props: ItemProps) => {
         dangerouslySetInnerHTML={{ __html: props?.category }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Item;
+export default Item
 
 const Div = styled.div`
   .highlight {
     color: #3858c0;
   }
-`;
+`
 const Tag = styled.div`
   color: #686980;
   font-size: 12px;
   .highlight {
     color: #3858c0;
   }
-`;
+`
