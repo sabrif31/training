@@ -10,77 +10,19 @@ import data from "../../datas/datas.json";
 import CustomTextField from "../atoms/TextField";
 import Item from "../atoms/Item";
 
-type Items = {
-  activity: string;
-  sector: string;
-  category: string;
-};
-
 type Row = {
   index: number;
   style: React.CSSProperties;
 };
+
 type SearchProps = {
   keys: string[];
-};
-
-const highlight = (
-  fuseSearchResult: Fuse.FuseResult<Items>[],
-  highlightClassName: string = "highlight"
-) => {
-  const set = (obj: any, path: string, value: string) => {
-    const pathValue = path.split(".");
-    let i;
-
-    for (i = 0; i < pathValue.length - 1; i++) {
-      obj = obj[pathValue[i]];
-    }
-
-    obj[pathValue[i]] = value;
-  };
-
-  const generateHighlightedText = (inputText: string, regions = []) => {
-    let content = "";
-    let nextUnhighlightedRegionStartingIndex = 0;
-
-    regions.forEach((region) => {
-      const lastRegionNextIndex = region[1] + 1;
-
-      content += [
-        inputText.substring(nextUnhighlightedRegionStartingIndex, region[0]),
-        `<mark class="${highlightClassName}">`,
-        inputText.substring(region[0], lastRegionNextIndex),
-        "</mark>",
-      ].join("");
-
-      nextUnhighlightedRegionStartingIndex = lastRegionNextIndex;
-    });
-
-    content += inputText.substring(nextUnhighlightedRegionStartingIndex);
-
-    return content;
-  };
-  return fuseSearchResult
-    .filter(({ matches }: Fuse.FuseResult<Items>) => matches && matches.length)
-    .map(({ item, matches }: Fuse.FuseResult<Items>) => {
-      const highlightedItem = { ...item };
-
-      matches?.forEach((match: any) => {
-        set(
-          highlightedItem,
-          match.key,
-          generateHighlightedText(match.value, match.indices)
-        );
-      });
-
-      return highlightedItem;
-    });
 };
 
 const MySearch = (props: SearchProps) => {
   const [value, setValue] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { hits, query, onSearch } = useFuse(data, {
+  const { hits, query, onSearch, removeMark } = useFuse(data, {
     includeMatches: true,
     shouldSort: true,
     threshold: 0.1,
@@ -93,13 +35,12 @@ const MySearch = (props: SearchProps) => {
   const Row = ({ index, style }: Row) => (
     <ListItem
       onClick={() => {
-        console.log(hits[index]);
-        setValue(hits[index].item.activity);
+        setValue(removeMark(hits[index].activity));
         setIsOpen(false);
       }}
       style={style}
     >
-      <Item {...highlight(hits)[index]} key={index} />
+      <Item {...hits[index]} key={index} />
     </ListItem>
   );
 
@@ -112,7 +53,7 @@ const MySearch = (props: SearchProps) => {
       <SearchContainer>
         <CustomTextField
           name={"search"}
-          type={"search"}
+          type={"text"}
           className="search"
           label={"Search activity"}
           changeHandler={(e) => {
@@ -191,10 +132,10 @@ const ListItem = styled.div`
   align-items: center;
   padding: 10px;
   cursor: pointer;
-  :nth-child(odd) {
+  :nth-of-type(odd) {
     background-color: #f5f5f5;
   }
-  :nth-child(even) {
+  :nth-of-type(even) {
     background-color: #fff;
   }
   .sub {
@@ -202,10 +143,10 @@ const ListItem = styled.div`
     font-size: 12px;
   }
   :hover {
-    background-color: #c1c1c1;
-    color: #fff;
+    background-color: #e9e9e9;
+    /*color: #fff;*/
     .sub {
-      color: #fff;
+      /*color: #fff;*/
     }
   }
 `;
