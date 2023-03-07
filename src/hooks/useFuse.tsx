@@ -57,7 +57,7 @@ const highlight = (
     })
 }
 
-export const useFuse = (list: Array<object>, options: Fuse.IFuseOptions<T>) => {
+export const useFuse = (list: Array<any>, options: Fuse.IFuseOptions<T>) => {
   const [query, updateQuery] = useState('')
   const { ...fuseOptions } = options
   const fuse = useMemo(() => new Fuse(list, fuseOptions), [list, fuseOptions])
@@ -65,7 +65,7 @@ export const useFuse = (list: Array<object>, options: Fuse.IFuseOptions<T>) => {
   const hits = useMemo(
     () =>
       !query
-        ? fuse.getIndex().docs.map((item: Array<object>, refIndex: number) => ({
+        ? fuse.getIndex().docs.map((item: Array<any>, refIndex: number) => ({
             item,
             refIndex,
           }))
@@ -76,7 +76,7 @@ export const useFuse = (list: Array<object>, options: Fuse.IFuseOptions<T>) => {
   const setQuery = useCallback(debounce(100, updateQuery), [])
 
   const onSearch = useCallback(
-    (e: any) => setQuery(e.target.value.trim()),
+    (value: string) => setQuery(value.trim()),
     [setQuery]
   )
 

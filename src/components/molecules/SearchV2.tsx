@@ -57,7 +57,7 @@ const MySearch = (props: SearchProps) => {
           className="search"
           label={'Search activity'}
           changeHandler={(e) => {
-            onSearch(e)
+            onSearch(e.target.value)
             setValue(e.target.value)
           }}
           value={value}
