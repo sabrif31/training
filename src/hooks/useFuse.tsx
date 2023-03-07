@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { debounce } from 'throttle-debounce'
 
 const highlight = (
-  fuseSearchResult: Fuse.FuseResult<Array<object>>[],
+  fuseSearchResult: Fuse.FuseResult<Array<any>>[],
   highlightClassName: string = 'highlight'
 ) => {
   const set = (obj: any, path: string, value: string) => {
@@ -40,9 +40,9 @@ const highlight = (
   }
   return fuseSearchResult
     .filter(
-      ({ matches }: Fuse.FuseResult<Array<object>>) => matches && matches.length
+      ({ matches }: Fuse.FuseResult<Array<any>>) => matches && matches.length
     )
-    .map(({ item, matches }: Fuse.FuseResult<Array<object>>) => {
+    .map(({ item, matches }: Fuse.FuseResult<Array<any>>) => {
       const highlightedItem = { ...item }
 
       matches?.forEach((match: any) => {
