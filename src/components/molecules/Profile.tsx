@@ -22,36 +22,6 @@ type ProfileProps = {
   user_metadata?: any
 }
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  button {
-    width: 45%;
-  }
-`
-const ProfileContainer = styled.div`
-  .profile-input {
-    margin-bottom: 20px;
-  }
-`
-const ProfileInfo = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-
-  div {
-    width: 100%;
-    padding-left: 15px;
-
-    h2,
-    h5 {
-      margin: 0;
-    }
-  }
-`
-const ProfileImage = styled.img`
-  border-radius: 50%;
-`
-
 const Profile: FC = (props: ProfileProps): ReactElement => {
   const notify = () => toast('Le profile a été mis à jour !')
   const initialState = {}
@@ -187,3 +157,33 @@ const Profile: FC = (props: ProfileProps): ReactElement => {
 }
 
 export default Profile
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  button {
+    width: 45%;
+  }
+`
+const ProfileContainer = styled.div`
+  .profile-input {
+    margin-bottom: 20px;
+  }
+`
+const ProfileInfo = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+
+  div {
+    width: 100%;
+    padding-left: 15px;
+
+    h2,
+    h5 {
+      margin: 0;
+    }
+  }
+`
+const ProfileImage = styled.img`
+  border-radius: 50%;
+`

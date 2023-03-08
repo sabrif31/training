@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 
 type ItemProps = {
-  activity: string
-  sector: string
-  category: string
+  readonly activity: string
+  readonly sector: string
+  readonly category: string
 }
 
 const Item = (props: ItemProps) => {

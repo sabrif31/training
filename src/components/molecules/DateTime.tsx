@@ -12,6 +12,7 @@ import TimePicker from '../atoms/TimePicker'
 
 type DateTimeProps = {
   onSelectDate?: (date: string) => void
+  onChange?: (date: string) => void
   format?: string
   locale?: any
   intervals?: number | undefined
@@ -21,39 +22,9 @@ type DateTimeProps = {
   minTime?: Date
   excludeTimes?: Array<string>
   filterTime?: React.ChangeEvent<HTMLInputElement>
-  onChange?: any
   timeFormat?: string
   timeIntervals?: number
 }
-
-const DateTimeContainer = styled.div`
-  display: flex;
-  width: 600px;
-`
-const DateContainer = styled.div`
-  margin-right: 50px;
-`
-const TimeContainer = styled.div``
-const InputContainer = styled.div`
-  display: flex;
-  align-items: center;
-
-  label {
-    color: #3858c0;
-    width: 50px;
-  }
-
-  .time {
-    border: 1px solid rgba(75, 135, 251, 1);
-    width: 100px;
-  }
-`
-const DateButtonContainer = styled.div`
-  display: flex;
-  .schedule-button {
-    margin-right: 10px;
-  }
-`
 
 const DateTime: FC<DateTimeProps> = (props: DateTimeProps): ReactElement => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
@@ -115,3 +86,32 @@ const DateTime: FC<DateTimeProps> = (props: DateTimeProps): ReactElement => {
 }
 
 export default DateTime
+
+const DateTimeContainer = styled.div`
+  display: flex;
+  width: 600px;
+`
+const DateContainer = styled.div`
+  margin-right: 50px;
+`
+const TimeContainer = styled.div``
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  label {
+    color: #3858c0;
+    width: 50px;
+  }
+
+  .time {
+    border: 1px solid rgba(75, 135, 251, 1);
+    width: 100px;
+  }
+`
+const DateButtonContainer = styled.div`
+  display: flex;
+  .schedule-button {
+    margin-right: 10px;
+  }
+`

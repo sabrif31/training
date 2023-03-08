@@ -21,15 +21,6 @@ import NavRoute from '../molecules/NavRoute'
 import RegisterForm from '../molecules/RegisterForm'
 import SearchPage from './SearchPage'
 
-const LoginButton = styled(CustomButton)`
-  &.btn-login {
-    width: 74px;
-    border-radius: 4px;
-    height: 36px;
-    margin: 0;
-    text-transform: uppercase;
-  }
-`
 const ProtectedRoute = (args: any) => {
   const Component = withAuthenticationRequired(args.component, args)
   return <Component />
@@ -128,3 +119,13 @@ const Main: FC = (): ReactElement => {
 }
 
 export default Main
+
+const LoginButton = styled(CustomButton)`
+  &.btn-login {
+    width: 74px;
+    border-radius: 4px;
+    height: 36px;
+    margin: 0;
+    text-transform: uppercase;
+  }
+`

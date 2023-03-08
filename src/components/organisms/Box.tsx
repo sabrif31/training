@@ -7,6 +7,12 @@ type BoxProps = {
   sx?: object
 }
 
+const BlockBox: FC<BoxProps> = (props: BoxProps): ReactElement => {
+  return <CustomBox sx={props.sx}>{props.children}</CustomBox>
+}
+
+export default BlockBox
+
 const CustomBox = styled(Box)`
   border-left: 1px solid #f1f1f1;
   border-right: 1px solid #f1f1f1;
@@ -14,9 +20,3 @@ const CustomBox = styled(Box)`
   padding: 10px;
   background-color: #ffffff;
 `
-
-const BlockBox: FC<BoxProps> = (props: BoxProps): ReactElement => {
-  return <CustomBox sx={props.sx}>{props.children}</CustomBox>
-}
-
-export default BlockBox

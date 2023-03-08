@@ -10,12 +10,6 @@ type PaperProps = {
   sx?: object
 }
 
-const CustomPaper = styled(Paper)`
-  padding: 8px;
-  text-align: center;
-  width: 350px;
-`
-
 const BlockPaper: FC<PaperProps> = (props: PaperProps): ReactElement => {
   return (
     <CustomPaper square={props.square} sx={props.sx}>
@@ -25,3 +19,9 @@ const BlockPaper: FC<PaperProps> = (props: PaperProps): ReactElement => {
 }
 
 export default BlockPaper
+
+const CustomPaper = styled(Paper)`
+  padding: 8px;
+  text-align: center;
+  width: 350px;
+`
