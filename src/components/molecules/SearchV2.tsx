@@ -5,7 +5,7 @@ import { FixedSizeList as List } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 
 import { useFuse } from '../../hooks/useFuse'
-import data from '../../datas/datas.json'
+import datas from '../../datas/datas.json'
 import CustomTextField from '../atoms/TextField'
 import Item from '../atoms/Item'
 
@@ -16,12 +16,13 @@ type Row = {
 
 type SearchProps = {
   keys: string[]
+  data: any
 }
 
 const MySearch = (props: SearchProps) => {
   const [value, setValue] = useState<string>('')
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const { hits, query, onSearch, removeMark } = useFuse(data, {
+  const { hits, query, onSearch, removeMark } = useFuse(props.data, {
     includeMatches: true,
     shouldSort: true,
     threshold: 0.1,

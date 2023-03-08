@@ -12,34 +12,6 @@ import {
 
 import frLocale from 'date-fns/locale/fr'
 
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  height: 300px;
-  overflow: auto;
-  text-align: center;
-  justify-content: center;
-`
-const LiTime = styled.li`
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #f3f3f3;
-  }
-  &.selected {
-    background-color: rgba(75, 135, 251, 1);
-    color: #ffffff;
-    /*
-      border: 1px solid rgba(75, 135, 251, 1);
-      color: rgba(75, 135, 251, 1);
-      font-weight: bold;
-      */
-  }
-`
-const UlTime = styled.ul`
-  width: 100%;
-`
-
 type TimePickerProps = {
   format?: string
   locale?: any
@@ -148,3 +120,31 @@ CustomButton.defaultProps = defaultProps;
 */
 
 export default TimePicker
+
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: 300px;
+  overflow: auto;
+  text-align: center;
+  justify-content: center;
+`
+const LiTime = styled.li`
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f3f3f3;
+  }
+  &.selected {
+    background-color: rgba(75, 135, 251, 1);
+    color: #ffffff;
+    /*
+      border: 1px solid rgba(75, 135, 251, 1);
+      color: rgba(75, 135, 251, 1);
+      font-weight: bold;
+      */
+  }
+`
+const UlTime = styled.ul`
+  width: 100%;
+`

@@ -8,19 +8,6 @@ import CustomButton from '../atoms/Button'
 
 import { useForm } from '../../hooks/useForm'
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`
-const FormTypography = styled(Typography)`
-  margin: 0px 0 8px 0;
-`
-const Separator = styled(Divider)`
-  margin: 0px 0 8px 0;
-`
-
 const LoginForm: React.FC = () => {
   const { loginWithPopup } = useAuth0()
 
@@ -78,3 +65,16 @@ const LoginForm: React.FC = () => {
 }
 
 export default LoginForm
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+const FormTypography = styled(Typography)`
+  margin: 0px 0 8px 0;
+`
+const Separator = styled(Divider)`
+  margin: 0px 0 8px 0;
+`

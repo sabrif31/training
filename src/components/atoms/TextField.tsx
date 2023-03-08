@@ -2,33 +2,22 @@ import React, { FC, ReactElement, RefObject } from 'react'
 import { TextField } from '@mui/material'
 import styled from '@emotion/styled'
 
-const Input = styled(TextField)`
-  margin: 0 0 8px 0;
-  width: 100%;
-  background-color: #f3f3f3;
-  border: none;
-  border-radius: 10px;
-  fieldset {
-    border: none;
-  }
-`
-
 type CustomTextFieldProps = {
-  ref?: RefObject<HTMLInputElement>
-  name: string
+  readonly ref?: RefObject<HTMLInputElement>
+  readonly name: string
+  readonly disabled?: boolean
+  readonly required?: boolean
+  readonly helperText?: string
+  readonly label?: string
+  readonly type?: string
+  readonly defaultValue?: string
+  readonly sx?: object
   changeHandler?: (event: React.ChangeEvent<HTMLInputElement>) => void
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void
   value?: string
-  disabled?: boolean
-  required?: boolean
-  helperText?: string
-  label?: string
-  type?: string
   className?: string
   style?: object
   InputProps?: object
-  defaultValue?: string
-  sx?: object
 }
 
 const CustomTextField: FC<CustomTextFieldProps> = (
@@ -59,3 +48,14 @@ const CustomTextField: FC<CustomTextFieldProps> = (
 }
 
 export default CustomTextField
+
+const Input = styled(TextField)`
+  margin: 0 0 8px 0;
+  width: 100%;
+  background-color: #f3f3f3;
+  border: none;
+  border-radius: 10px;
+  fieldset {
+    border: none;
+  }
+`

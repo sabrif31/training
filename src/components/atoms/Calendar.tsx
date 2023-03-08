@@ -3,6 +3,41 @@ import { DayPicker } from 'react-day-picker'
 
 import 'react-day-picker/dist/style.css'
 
+type CalendarProps = {
+  onSelectDate: (date: Date) => void
+  readonly className?: string
+}
+
+const Calendar: FC<CalendarProps> = (props: CalendarProps): ReactElement => {
+  const [selected, setSelected] = useState<Date>()
+
+  const onSelect = (date: any) => {
+    setSelected(date)
+    props.onSelectDate(date)
+  }
+
+  return (
+    <>
+      <style>{css}</style>
+      <DayPicker
+        className={props.className}
+        mode="single"
+        selected={selected}
+        onSelect={onSelect}
+        modifiersClassNames={{
+          selected: 'my-selected',
+          today: 'my-today',
+        }}
+        modifiersStyles={{
+          disabled: { fontSize: '75%' },
+        }}
+      />
+    </>
+  )
+}
+
+export default Calendar
+
 const css = `
     .my-selected:not([disabled]) { 
         font-weight: bold; 
@@ -43,38 +78,3 @@ const css = `
         background-color: #f3f3f3;
     }
 `
-
-type CalendarProps = {
-  onSelectDate: (date: Date) => void
-  className?: string
-}
-
-const Calendar: FC<CalendarProps> = (props: CalendarProps): ReactElement => {
-  const [selected, setSelected] = useState<Date>()
-
-  const onSelect = (date: any) => {
-    setSelected(date)
-    props.onSelectDate(date)
-  }
-
-  return (
-    <>
-      <style>{css}</style>
-      <DayPicker
-        className={props.className}
-        mode="single"
-        selected={selected}
-        onSelect={onSelect}
-        modifiersClassNames={{
-          selected: 'my-selected',
-          today: 'my-today',
-        }}
-        modifiersStyles={{
-          disabled: { fontSize: '75%' },
-        }}
-      />
-    </>
-  )
-}
-
-export default Calendar

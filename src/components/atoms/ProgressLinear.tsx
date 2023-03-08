@@ -3,16 +3,8 @@ import Box from '@mui/material/Box'
 import LinearProgress from '@mui/material/LinearProgress'
 import styled from '@emotion/styled'
 
-const LoaderBox = styled(Box)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 4px;
-  width: 100%;
-`
-
 type ProgressProps = {
-  isLoading: boolean
+  readonly isLoading: boolean
 }
 
 const ProgressLinear: FC<ProgressProps> = (
@@ -22,3 +14,11 @@ const ProgressLinear: FC<ProgressProps> = (
 }
 
 export default ProgressLinear
+
+const LoaderBox = styled(Box)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+`
