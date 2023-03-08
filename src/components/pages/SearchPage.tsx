@@ -3,7 +3,7 @@ import BlockBox from '../organisms/Box'
 import Search from '../molecules/Search'
 import MySearch from '../molecules/SearchV2'
 import { useQuery } from '@apollo/client'
-import { ACTIVITY_QUERIES } from '../../dto/activity.create.dto'
+import { ACTIVITY_QUERIES } from '../../dto/activity.dto'
 import ProgressLinear from '../atoms/ProgressLinear'
 
 type Sector = {
