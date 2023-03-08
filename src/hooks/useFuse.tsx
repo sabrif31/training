@@ -2,6 +2,10 @@ import Fuse from 'fuse.js'
 import { useCallback, useMemo, useState } from 'react'
 import { debounce } from 'throttle-debounce'
 
+interface FuzeIndexEx extends Fuse.FuseIndex<T> {
+  docs: Array<any>
+}
+
 const highlight = (
   fuseSearchResult: Fuse.FuseResult<Array<any>>[],
   highlightClassName: string = 'highlight'
